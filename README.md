@@ -540,7 +540,3 @@ nmcli connection up "Wired connection 1"          # Reactivar i renovar la IP
 
 ---
 
-## Documentació consultada
-
-- [Ubuntu Server Docs — How to install and configure isc-kea](https://ubuntu.com/server/docs/how-to-install-and-configure-isc-kea)
-- [KEA — The DHCPv4 Server](https://kea.readthedocs.io/en/kea-1.6.2/arm/dhcp4-srv.html)
