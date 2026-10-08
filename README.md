@@ -474,6 +474,8 @@ Es comprova que:
 sudo cat /var/lib/kea/kea-leases4.csv
 ```
 
+![Fitxer de concessions del servidor](media/12b-concessions.png)
+
 ```
 address,hwaddr,client_id,valid_lifetime,expire,subnet_id,fqdn_fwd,fqdn_rev,hostname,state,user_context,pool_id
 192.169.2.55,08:00:27:94:e7:b9,01:08:00:27:94:e7:b9,4000,1791481130,1,0,0,usuari-virtualbox,0,,0
