@@ -122,7 +122,7 @@ ip a
 
 > **Treballant per SSH.** Si s'administra el servidor remotament, convé fer servir `sudo netplan try` en lloc d'`apply`: aplica la configuració i la reverteix automàticament passats 120 segons si no es confirma, de manera que un error en el YAML no deixa la màquina inaccessible.
 
-![Fitxer de configuració de Netplan](imatges/01-netplan.png)
+![Fitxer de configuració de Netplan](media/01-netplan.png)
 
 *Fitxer `/etc/netplan/00-installer-config.yaml` amb les dues interfícies definides.*
 
@@ -176,7 +176,7 @@ Verificació de l'estat de totes les unitats:
 systemctl list-unit-files | grep kea
 ```
 
-![Desactivació dels serveis DHCPv6 i DDNS](imatges/02-serveis-desactivats.png)
+![Desactivació dels serveis DHCPv6 i DDNS](media/02-serveis-desactivats.png)
 
 *`kea-dhcp6-server` i `kea-dhcp-ddns-server` queden com a `disabled`, mentre que `kea-dhcp4-server` es manté `enabled`.*
 
@@ -254,7 +254,7 @@ sudo cp /etc/kea/kea-dhcp4.conf /etc/kea/kea-dhcp4.conf.bak
 }
 ```
 
-![Fitxer kea-dhcp4.conf](imatges/03-kea-dhcp4-conf.png)
+![Fitxer kea-dhcp4.conf](media/03-kea-dhcp4-conf.png)
 
 *Contingut complet de `/etc/kea/kea-dhcp4.conf`.*
 
@@ -292,7 +292,7 @@ sudo systemctl restart kea-dhcp4-server
 sudo systemctl status kea-dhcp4-server --no-pager
 ```
 
-![Validació i estat del servei](imatges/04-validacio-i-estat.png)
+![Validació i estat del servei](media/04-validacio-i-estat.png)
 
 *La validació confirma que la subxarxa `192.169.2.0/24` s'ha afegit correctament amb els paràmetres `t1=1000`, `t2=2000` i `valid-lifetime=4000`. El servei apareix com a **active (running)** i escoltant a la interfície `enp0s8`.*
 
@@ -304,7 +304,7 @@ sudo systemctl status kea-dhcp4-server --no-pager
 
 El client Zorin s'arrenca inicialment amb l'adaptador en mode NAT per poder descarregar el paquet.
 
-![Adaptador del client en mode NAT](imatges/05-client-nat.png)
+![Adaptador del client en mode NAT](media/05-client-nat.png)
 
 *Configuració de xarxa del client a VirtualBox abans de començar la captura.*
 
@@ -322,7 +322,7 @@ sudo wireshark
 3. Es força un refresc de la IP amb l'eina gràfica de l'escriptori (*Cablejat → Desconnectar* i tornar a connectar).
 4. S'atura la captura i s'aplica el filtre de visualització `dhcp`.
 
-![Llista de paquets DHCP capturats](imatges/06-wireshark-llista.png)
+![Llista de paquets DHCP capturats](media/06-wireshark-llista.png)
 
 *Paquets DHCP capturats durant tot el procés.*
 
@@ -349,31 +349,29 @@ La captura mostra tres fases ben diferenciades:
 
 #### Paquet 17 — DHCP Discover
 
-![Detall del paquet Discover](imatges/07-paquet-17-discover.png)
+![Detall del paquet Discover](media/07-paquet-17-discover.png)
 
 L'origen és `0.0.0.0` perquè el client encara no té cap adreça assignada, i la destinació és l'adreça de difusió limitada `255.255.255.255`. A nivell Ethernet, la MAC de destinació és `ff:ff:ff:ff:ff:ff`.
 
 #### Paquet 18 — DHCP Offer
 
-![Detall del paquet Offer](imatges/08-paquet-18-offer.png)
+![Detall del paquet Offer](media/08-paquet-18-offer.png)
 
 El servidor respon des de `192.169.2.1` i al camp **`Your (client) IP address`** ja hi consta `192.169.2.55`, cosa que confirma que la reserva per MAC s'està aplicant. El camp `Bootp flags: 0x0000 (Unicast)` indica que el client accepta rebre la resposta de forma unicast.
 
 #### Paquet 19 — DHCP Request
 
-![Detall del paquet Request](imatges/09-paquet-19-request.png)
-
 El client confirma l'oferta rebuda. Continua enviant-se a `255.255.255.255`.
 
 #### Paquet 20 — DHCP ACK
 
-![Detall del paquet ACK](imatges/10-paquet-20-ack.png)
+![Detall del paquet ACK](media/10-paquet-20-ack.png)
 
 El servidor confirma definitivament l'assignació de `192.169.2.55` i la negociació queda tancada.
 
 #### Paquet 3 — Request de renovació (NAT)
 
-![Detall del paquet 3](imatges/11-paquet-3-renovacio.png)
+![Detall del paquet 3](media/11-paquet-3-renovacio.png)
 
 Aquest paquet és anterior al canvi de xarxa i serveix de contrast: es tracta d'una **renovació** de concessió sobre el NAT de VirtualBox, no d'una negociació nova.
 
@@ -452,7 +450,7 @@ nmcli connection down "Wired connection 1" && nmcli connection up "Wired connect
 
 ### 9.2. Resultat al client
 
-![Configuració final del client i concessions del servidor](imatges/12-comprovacio-final.png)
+![Configuració final del client](media/12-comprovacio-final.png)
 
 Al client s'obté:
 
@@ -487,7 +485,7 @@ El registre confirma l'adreça assignada, la MAC del client, el temps de concess
 
 ### 9.4. Estat final del servidor
 
-![Interfícies del servidor](imatges/13-servidor-ip-a.png)
+![Interfícies del servidor](media/13-servidor-ip-a.png)
 
 El servidor manté la interfície `enp0s3` amb l'adreça del NAT i `enp0s8` amb l'adreça estàtica `192.169.2.1/24` des de la qual dona servei DHCP.
 
